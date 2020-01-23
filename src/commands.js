@@ -13,20 +13,20 @@ export async function parseUserMessage(msg, logger) {
 
   if (msg.content.charAt(0) !== '-') {
     // plain text or unrecognized command, should only respond in DM
-    logger.info('  Message was plaintext - not a command');
+    logger.verbose('Message was plaintext - not a command');
 
     if (msg.channel.type === 'dm') {
-      logger.info('  Message was a DM - replying');
+      logger.verbose('Message was a DM - replying');
       commands['unknown'](msg, [], logger);
     } else {
-      logger.info('  Message was not a DM - ignoring');
+      logger.verbose('Message was not a DM - ignoring');
     }
   } else {
-    logger.info('  Message was a command');
+    logger.verbose('Message was a command');
     let params = msg.content.split(' ');
 
     if (!commands.hasOwnProperty(params[0])) {
-      logger.info('  Command unknown');
+      logger.warn(`Command unknown from ${msg.author.tag}`);
       commands['unknown'](msg, [], logger);
     } else {
       await commands[params[0]](msg, params, logger);

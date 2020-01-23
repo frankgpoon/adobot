@@ -1,20 +1,23 @@
 import Discord from 'Discord.js';
 import winston from 'winston';
+import { format } from 'logform';
+
 import { parseUserMessage } from './commands.js';
 
 process.env.DEBUG_LEVEL = 'info';
 
 import {token} from './token.js'
-process.env.TOKEN = token;
+process.env.DISCORD_TOKEN = token;
 
-const TOKEN = process.env.TOKEN;
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 const DEBUG_LEVEL = process.env.DEBUG_LEVEL;
 
 // create client
 const client = new Discord.Client();
 const logger = winston.createLogger({
   level: DEBUG_LEVEL,
-  transports: [new winston.transports.Console()]
+  transports: [new winston.transports.Console()],
+  format: format.cli()
 });
 
 logger.info('Starting up Adobot');
@@ -22,7 +25,7 @@ logger.info('Starting up Adobot');
 // logging stuff when adobot signs in
 client.on('ready', () => {
   logger.info(`Logged in as ${client.user.tag}!`);
-  logger.info(`Setting up status`);
+  logger.verbose(`Setting up status`);
   client.user.setActivity('Tyler feed', { type: 'WATCHING' })
 });
 
@@ -42,7 +45,7 @@ client.on('error', (err) => {
 })
 
 // login with given token
-client.login(TOKEN);
+client.login(DISCORD_TOKEN);
 
 
 
