@@ -1,11 +1,12 @@
 const commands = {};
 import { unknown, fuckTyler, fadi } from './replies.js';
-import { candle } from './voice.js';
+import { candle, playYoutube } from './voice.js';
 
 commands['unknown'] = unknown;
 commands['-ft'] = fuckTyler;
 commands['-pizza'] = fadi;
 commands['-candle'] = candle;
+commands['-play'] = playYoutube;
 
 export async function parseUserMessage(msg, logger, voiceInstances) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
