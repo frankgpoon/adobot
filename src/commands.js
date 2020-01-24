@@ -4,10 +4,10 @@ import { candle } from './voice.js';
 
 commands['unknown'] = unknown;
 commands['-ft'] = fuckTyler;
-commands['-fadi'] = fadi;
+commands['-pizza'] = fadi;
 commands['-candle'] = candle;
 
-export async function parseUserMessage(msg, logger) {
+export async function parseUserMessage(msg, logger, voiceInstances) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
     ` channel ${msg.channel.id}`);
 
@@ -29,7 +29,7 @@ export async function parseUserMessage(msg, logger) {
       logger.warn(`Command unknown from ${msg.author.tag}`);
       commands['unknown'](msg, [], logger);
     } else {
-      await commands[params[0]](msg, params, logger);
+      await commands[params[0]](msg, params, logger, voiceInstances);
     }
   }
 }

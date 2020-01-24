@@ -20,6 +20,8 @@ const logger = winston.createLogger({
   format: format.cli()
 });
 
+const voiceInstances = {};
+
 logger.info('Starting up Adobot');
 
 // logging stuff when adobot signs in
@@ -33,7 +35,7 @@ client.on('ready', () => {
 client.on('message', async msg => {
   if (msg.author.id !== client.user.id) {
     // ignores messages sent by Adobot
-    await parseUserMessage(msg, logger);
+    await parseUserMessage(msg, logger, voiceInstances);
   }
 
 });
