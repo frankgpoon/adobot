@@ -4,13 +4,8 @@ import { format } from 'logform';
 
 import { parseUserMessage } from './commands.js';
 
-process.env.DEBUG_LEVEL = 'info';
-
-import {token} from './token.js'
-process.env.DISCORD_TOKEN = token;
-
-const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
-const DEBUG_LEVEL = process.env.DEBUG_LEVEL;
+const DISCORD_TOKEN = process.env.ADOBOT_DISCORD_TOKEN;
+const DEBUG_LEVEL = process.env.ADOBOT_DEBUG_LEVEL;
 
 // create client
 const client = new Discord.Client();
