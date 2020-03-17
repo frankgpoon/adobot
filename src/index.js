@@ -1,4 +1,4 @@
-import Discord from 'Discord.js';
+import Discord from 'discord.js';
 import winston from 'winston';
 import { format } from 'logform';
 
