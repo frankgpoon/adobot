@@ -1,3 +1,6 @@
+import { FADI_PASTA, HELP_TEXT, FADI_SECRETARY_URL } from './const.js';
+import Discord from 'discord.js';
+
 export function fuckTyler(msg, params, logger) {
   logger.info(`Sent a message saying fuck Tyler`);
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
@@ -14,12 +17,29 @@ export function unknown(msg, params, logger) {
   msg.channel.send(`OK ${msg.author} I do not even know what you are saying`);
 }
 
-import { FADI_PASTA } from './const.js';
 
-export function fadi(msg, params, logger) {
+export function pizza(msg, params, logger) {
   logger.info('Sent Fadi Copypasta');
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
     `channel ${msg.channel.id}`);
 
   msg.channel.send(FADI_PASTA);
+}
+
+export function help(msg, params, logger) {
+  logger.info('Sent help');
+  logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
+    `channel ${msg.channel.id}`);
+
+  msg.channel.send(HELP_TEXT);
+}
+
+export function voteForFadi(msg, params, logger) {
+  logger.info('Sent Fadi campaign poster');
+  logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
+    `channel ${msg.channel.id}`);
+  let attachment = new Discord.MessageAttachment(FADI_SECRETARY_URL);
+  msg.channel.send({
+    files: [FADI_SECRETARY_URL]
+  });
 }

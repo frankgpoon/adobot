@@ -28,7 +28,7 @@ logger.info('Starting up Adobot');
 client.on('ready', () => {
   logger.info(`Logged in as ${client.user.tag}!`);
   logger.verbose(`Setting up status`);
-  client.user.setActivity('Tyler feed', { type: 'WATCHING' })
+  client.user.setActivity('adobo vids - yum!', { type: 'WATCHING' })
 });
 
 // parse messages
