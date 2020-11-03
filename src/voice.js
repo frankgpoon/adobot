@@ -6,6 +6,7 @@ class VoiceInfo {
   constructor(channel, logger) {
     this.channel = channel;
     this.logger = logger;
+    // 1 unique connection and timer per channel
     this.connection = null;
     this.timer = null;
   }
@@ -49,7 +50,7 @@ export async function playYoutube(msg, params, logger, voiceInstances) {
     logger.warn(`${msg.author.tag} was not in a voice channel when ` + 
       `-play was called`);
   
-    msg.reply(`please join a voice channel before doing this`);
+    msg.reply(`Please join a voice channel before doing this you stupid adobo`);
   }
 }
 
