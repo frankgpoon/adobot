@@ -40,7 +40,7 @@ export async function playYoutube(msg, params, logger, voiceInstances) {
     logger.verbose(`Playing video`);
 
     let info = await ytdl.getBasicInfo(videoUrl);
-    let onlineTimeMs = (parseInt(info.length_seconds) + DEFAULT_VOICE_ONLINE_TIME_S) * 1000;
+    let onlineTimeMs = (parseInt(info.videoDetails.lengthSeconds) + DEFAULT_VOICE_ONLINE_TIME_S) * 1000;
 
     await voiceInstances[msg.member.voice.guild.id].joinChannel(onlineTimeMs);
     voiceInstances[msg.member.voice.guild.id].connection.play(ytdl(
