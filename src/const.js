@@ -20,6 +20,6 @@ export const FADI_PASTA = "LOOK YOU PIECE OF SHIT NO ONE PRANKS ME AND IM " +
                   "TO SAY I WISH YOU CAN DO THIS ON YOUR TRUE FRIENDS AND " + 
                   "SEE WHAT THE FUCK THEY FEEL SEE YA ASS HOLE";
 
-export const CANDLE_VIDEO_URL = "https://www.youtube.com/watch?v=XL73jjKGcb0";
+export const CANDLE_VIDEO_URL = "https://www.youtube.com/watch?v=fwkCsLk3NBs";
 export const CANDLE_VIDEO_PADDING_S = 5;
 export const FADI_SECRETARY_URL = "https://i.imgur.com/T6wcklq.jpg";

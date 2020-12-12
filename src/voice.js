@@ -70,7 +70,7 @@ export async function candle(msg, params, logger, voiceInstances) {
     logger.verbose(`Playing candle video`);
 
     let info = await ytdl.getBasicInfo(CANDLE_VIDEO_URL);
-    let onlineTimeMs = (parseInt(info.length_seconds) + CANDLE_VIDEO_PADDING_S) * 1000;
+    let onlineTimeMs = (parseInt(info.videoDetails.lengthSeconds) + CANDLE_VIDEO_PADDING_S) * 1000;
 
     await voiceInstances[msg.member.voice.guild.id].joinChannel(onlineTimeMs);
     voiceInstances[msg.member.voice.guild.id].connection.play(ytdl(
