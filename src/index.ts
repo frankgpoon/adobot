@@ -1,19 +1,20 @@
-import { Client, Intents } from 'discord.js';
+import { Client, Intents, Message } from 'discord.js';
 import winston from 'winston';
 import { format } from 'logform';
 
 import { parseUserMessage } from './commands.js';
 
-const DISCORD_TOKEN = process.env.ADOBOT_DISCORD_TOKEN;
-const DEBUG_LEVEL = process.env.ADOBOT_DEBUG_LEVEL;
+const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
+const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';
 
 // create client
-const client = new Client({
+const client: Client = new Client({
   intents: [
-    Intents.FLAGS.GUILDS
-    ,
+    Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_MESSAGES
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_VOICE_STATES
   ]
 });
 const logger = winston.createLogger({
@@ -22,22 +23,21 @@ const logger = winston.createLogger({
   format: format.cli()
 });
 
-const voiceInstances = {};
-
 logger.info('Starting up Adobot');
 
 // logging stuff when adobot signs in
 client.on('ready', () => {
-  logger.info(`Logged in as ${client.user.tag}!`);
+  logger.info(`Logged in as ${client.user!.tag}!`);
   logger.verbose(`Setting up status`);
-  client.user.setActivity('adobo vids - yum!', { type: 'WATCHING' })
+
+  client.user!.setActivity('adobo vids - yum!', { type: 'WATCHING' })
 });
 
 // parse messages
-client.on('messageCreate', async (msg) => {
-  if (msg.author.id !== client.user.id) {
+client.on('messageCreate', async (msg: Message) => {
+  if (msg.author.id !== client.user!.id) {
     // ignores messages sent by Adobot
-    await parseUserMessage(msg, logger, voiceInstances);
+    await parseUserMessage(msg, logger);
   }
 
 });
