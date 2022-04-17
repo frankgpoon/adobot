@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import { Client, Intents } from 'discord.js';
 import winston from 'winston';
 import { format } from 'logform';
 
@@ -8,7 +8,14 @@ const DISCORD_TOKEN = process.env.ADOBOT_DISCORD_TOKEN;
 const DEBUG_LEVEL = process.env.ADOBOT_DEBUG_LEVEL;
 
 // create client
-const client = new Discord.Client();
+const client = new Client({
+  intents: [
+    Intents.FLAGS.GUILDS
+    ,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.GUILD_MESSAGES
+  ]
+});
 const logger = winston.createLogger({
   level: DEBUG_LEVEL,
   transports: [new winston.transports.Console()],
@@ -27,7 +34,7 @@ client.on('ready', () => {
 });
 
 // parse messages
-client.on('message', async msg => {
+client.on('messageCreate', async (msg) => {
   if (msg.author.id !== client.user.id) {
     // ignores messages sent by Adobot
     await parseUserMessage(msg, logger, voiceInstances);
