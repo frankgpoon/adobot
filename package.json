@@ -5,10 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "test",
-    "start": "node_modules/typescript/bin/tsc && node dist/index.js",
+    "start": "npm i && node_modules/typescript/bin/tsc && node dist/index.js",
     "build": "node_modules/typescript/bin/tsc",
     "run": "node dist/index.js",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist node_modules"
   },
   "repository": {
     "type": "git",
