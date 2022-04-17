@@ -3,6 +3,7 @@ import winston from 'winston';
 import { format } from 'logform';
 
 import { parseUserMessage } from './commands.js';
+import { VoiceInstance } from "./constructs/voice_instance";
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
 const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';
@@ -17,11 +18,14 @@ const client: Client = new Client({
     Intents.FLAGS.GUILD_VOICE_STATES
   ]
 });
+
 const logger = winston.createLogger({
   level: DEBUG_LEVEL,
   transports: [new winston.transports.Console()],
   format: format.cli()
 });
+
+const voiceInstances: Record<string, VoiceInstance> = {};
 
 logger.info('Starting up Adobot');
 
@@ -37,7 +41,7 @@ client.on('ready', () => {
 client.on('messageCreate', async (msg: Message) => {
   if (msg.author.id !== client.user!.id) {
     // ignores messages sent by Adobot
-    await parseUserMessage(msg, logger);
+    await parseUserMessage(msg, logger, voiceInstances);
   }
 
 });

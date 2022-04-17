@@ -4,6 +4,7 @@ import { ChannelTypes } from 'discord.js/typings/enums';
 import { Logger } from 'winston';
 import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
 import { candle, playYoutube } from './voice.js';
+import { VoiceInstance } from "./constructs/voice_instance";
 
 commands[''] = unknown;
 commands['help'] = help;
@@ -13,7 +14,7 @@ commands['fadi'] = voteForFadi;
 commands['candle'] = candle;
 commands['play'] = playYoutube;
 
-export async function parseUserMessage(msg: Message, logger: Logger) {
+export async function parseUserMessage(msg: Message, logger: Logger, voiceInstances?: Record<string, VoiceInstance>) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
     ` channel ${msg.channel.id}`);
 
@@ -36,7 +37,7 @@ export async function parseUserMessage(msg: Message, logger: Logger) {
       logger.warn(`Command unknown from ${msg.author.tag}`);
       commands[''](msg, [], logger);
     } else {
-      await commands[commandName](msg, params, logger);
+      await commands[commandName](msg, params, logger, voiceInstances);
     }
   }
 }
