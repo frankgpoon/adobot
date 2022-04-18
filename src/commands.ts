@@ -3,7 +3,7 @@ import { Message } from 'discord.js';
 import { ChannelTypes } from 'discord.js/typings/enums';
 import { Logger } from 'winston';
 import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
-import { candle, playYoutube } from './voice.js';
+import { candle, play, next } from './voice.js';
 import { VoiceInstance } from "./constructs/voice_instance";
 
 commands[''] = unknown;
@@ -12,7 +12,8 @@ commands['ft'] = fuckTyler;
 commands['pizza'] = pizza;
 commands['fadi'] = voteForFadi;
 commands['candle'] = candle;
-commands['play'] = playYoutube;
+commands['play'] = play;
+commands['next'] = next;
 
 export async function parseUserMessage(msg: Message, logger: Logger, voiceInstances?: Record<string, VoiceInstance>) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,

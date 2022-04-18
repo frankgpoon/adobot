@@ -4,13 +4,15 @@ import { unknown } from './replies.js'
 import { getVoiceConnection, 
   createAudioResource,
    StreamType ,
-   VoiceConnectionStatus} from '@discordjs/voice';
-import { Message } from 'discord.js';
+   VoiceConnectionStatus,
+   AudioResource} from '@discordjs/voice';
+import { Message, VoiceBasedChannel } from 'discord.js';
 import { Logger } from 'winston';
 import { VoiceInstance } from './constructs/voice_instance';
 import { ResourceMetadata } from './constructs/resource_metadata.js';
 
-export async function playYoutube(msg: Message, params: Array<string>, logger: Logger, voiceInstances: Record<string, VoiceInstance>) {
+
+export async function play(msg: Message, params: Array<string>, logger: Logger, voiceInstances: Record<string, VoiceInstance>) {
   logger.verbose(`Received request to play YouTube video.`);
 
   if (!msg.guild) {
@@ -36,18 +38,68 @@ export async function playYoutube(msg: Message, params: Array<string>, logger: L
   }
 
   // Only try to join the sender's voice channel if they are in one themselves
-  logger.info(`Attempting to join voice channel of ${msg.author.tag}`);
+  let channel = msg.member!.voice.channel;
   
+  let currentInstance = getVoiceInstance(voiceInstances, channel, logger);
+  let resource = await createResourceFromYoutubeVideo(videoUrl, msg);
+
+  let position = currentInstance.playOrQueue(resource);
+
+  let replyText;
+  let metadata = resource.metadata as ResourceMetadata;
+  if (position === 0) {
+    replyText = `Now playing "${metadata.title}" by ${metadata.authorName}`;
+  } else {
+    replyText = `Queued "${metadata.title}" by ${metadata.authorName} at position ${position}`;
+  } 
   
-  logger.verbose(`Starting connection to voice channel`);
-  logger.verbose(`Playing video ${videoUrl}`);
+  msg.reply(replyText);
+}
+
+
+export async function next(msg: Message, params: Array<string>, logger: Logger, voiceInstances: Record<string, VoiceInstance>) {
+  logger.verbose(`Received request to skip to next song.`);
+
+  if (!msg.guild) {
+    logger.verbose('Command was not called in a server');
+    unknown(msg, params, logger);
+    return;
+  }
+
+  if (!msg.member!.voice.channel) {
+    logger.warn(`${msg.author.tag} was not in a voice channel when ` + 
+      `-play was called`);
+  
+    msg.reply(`Please join a voice channel before doing this you stupid adobo`);
+    return;
+  }
 
   let channel = msg.member!.voice.channel;
+  logger.info(`Attempting to join voice channel ${channel.id}`);
+
+  let currentInstance = getVoiceInstance(voiceInstances, channel, logger);
+  
+  let playingNewResource = currentInstance.playNext();
+
+  if (playingNewResource) {
+    msg.react('👍');
+  } else {
+    msg.reply(`There is nothing in the queue right now.`);
+  }
+  
+}
+
+function getVoiceInstance(voiceInstances: Record<string, VoiceInstance>, channel: VoiceBasedChannel, logger: Logger): VoiceInstance {
+  
+  logger.info(`Attempting to join voice channel ${channel.id}`);
+
   let currentInstance;
   if (voiceInstances[channel.guild.id]) {
+    logger.verbose(`Adobot is already in a channel in this guild.`);
     currentInstance = voiceInstances[channel.guild.id];
     if (channel.id !== currentInstance.voiceChannel?.id) {
       // adobot is playing in another channel in this guild, join this one
+      logger.verbose(`Switching channels from ${currentInstance.voiceChannel?.id} to ${channel.id}.`);
       currentInstance.joinChannel(channel);
     }
     // adobot is in the same channel, do nothing
@@ -57,9 +109,12 @@ export async function playYoutube(msg: Message, params: Array<string>, logger: L
     voiceInstances[channel.guild.id] = currentInstance;
     currentInstance.joinChannel(channel);
   }
-  
+  return currentInstance;
+}
+
+
+async function createResourceFromYoutubeVideo(videoUrl: string, msg: Message): Promise<AudioResource> {
   let videoInfo = await ytdl.getBasicInfo(videoUrl);
-  // let onlineTimeMs = (parseInt(videoInfo.videoDetails.lengthSeconds) + DEFAULT_VOICE_ONLINE_TIME_MS) * 1000;
 
   let metadata: ResourceMetadata = {
     title: videoInfo.videoDetails.title,
@@ -83,17 +138,7 @@ export async function playYoutube(msg: Message, params: Array<string>, logger: L
   );
 
   resource.volume!.setVolume(0.25);
-
-  let position = currentInstance.playOrQueue(resource);
-
-  let replyText;
-  if (position === 0) {
-    replyText = `Now playing "${metadata.title}" by ${metadata.authorName}`;
-  } else {
-    replyText = `Queued "${metadata.title}" by ${metadata.authorName} at position ${position}`;
-  } 
-  
-  msg.reply(replyText);
+  return resource;
 }
 
 function isValidUrl(urlStr: string): boolean {

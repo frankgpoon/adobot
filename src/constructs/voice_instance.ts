@@ -91,6 +91,7 @@ export class VoiceInstance {
       let next = this.audioQueue.shift();
       if (!next) {
         this.logger.verbose(`Queue is empty. Not playing anything.`);
+        this.audioPlayer.stop();
         return false;
       } else {
         let metadata: ResourceMetadata = next.metadata as ResourceMetadata;

@@ -15,7 +15,7 @@ export function unknown(msg: Message, params: Array<string>, logger: Logger) {
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} ` +
     `channel ${msg.channel.id}`);
 
-  msg.channel.send(`OK ${msg.author} I do not even know what you are saying`);
+  msg.reply(`OK ${msg.author} I do not even know what you are saying`);
 }
 
 
