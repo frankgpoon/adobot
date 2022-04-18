@@ -1,10 +1,14 @@
 const commands: Record<string, Function> = {};
+
 import { Message } from 'discord.js';
-import { ChannelTypes } from 'discord.js/typings/enums';
-import { Logger } from 'winston';
+import { loggers } from 'winston';
 import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
 import { candle, play, next } from './voice.js';
 import { VoiceInstance } from "./constructs/voice_instance";
+
+
+const logger = loggers.get('global_logger');
+
 
 commands[''] = unknown;
 commands['help'] = help;
@@ -12,10 +16,16 @@ commands['ft'] = fuckTyler;
 commands['pizza'] = pizza;
 commands['fadi'] = voteForFadi;
 commands['candle'] = candle;
-commands['play'] = play;
-commands['next'] = next;
 
-export async function parseUserMessage(msg: Message, logger: Logger, voiceInstances?: Record<string, VoiceInstance>) {
+commands['play'] = play;
+commands['p'] = play;
+
+commands['next'] = next;
+commands['n'] = next;
+commands['skip'] = next;
+
+
+export async function parseUserMessage(msg: Message, voiceInstances?: Record<string, VoiceInstance>) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
     ` channel ${msg.channel.id}`);
 

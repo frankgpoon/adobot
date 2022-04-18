@@ -1,4 +1,4 @@
-export const DEFAULT_VOICE_ONLINE_TIME_MS: number = 30_000;
+export const DEFAULT_VOICE_ONLINE_TIME_MS: number = 120_000;
 
 export const HELP_TEXT: string = ">>> **Hello! My name is Adobot!** \n" + 
                          "\nText commands: \n" +
@@ -21,5 +21,4 @@ export const FADI_PASTA: string = "LOOK YOU PIECE OF SHIT NO ONE PRANKS ME AND I
                   "SEE WHAT THE FUCK THEY FEEL SEE YA ASS HOLE";
 
 export const CANDLE_VIDEO_URL: string = "https://www.youtube.com/watch?v=fwkCsLk3NBs";
-export const CANDLE_VIDEO_PADDING_S: number = 5;
 export const FADI_SECRETARY_URL: string = "https://i.imgur.com/T6wcklq.jpg";

@@ -1,13 +1,14 @@
 import { joinVoiceChannel, createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus, AudioPlayer, AudioResource, VoiceConnection, PlayerSubscription, AudioPlayerIdleState } from '@discordjs/voice';
 import { BaseGuildVoiceChannel } from 'discord.js';
 import { DEFAULT_VOICE_ONLINE_TIME_MS } from '../const';
-import { Logger } from 'winston';
+import { loggers } from 'winston';
 import { ResourceMetadata } from "./resource_metadata";
 
 
+const logger = loggers.get('global_logger');
+
 export class VoiceInstance {
   voiceChannel: BaseGuildVoiceChannel | null;
-  logger: Logger;
   connection: VoiceConnection | null;
 
   audioPlayer: AudioPlayer | null;
@@ -17,8 +18,7 @@ export class VoiceInstance {
   audioQueue: Array<AudioResource>;
   timer: ReturnType<typeof setTimeout> | null;
 
-  constructor(logger: Logger) {
-    this.logger = logger;
+  constructor() {
     this.voiceChannel = null;
     this.connection = null;
 
@@ -41,7 +41,7 @@ export class VoiceInstance {
     });
 
     this.connection.on('error', error => {
-      this.logger.error(`Error: ${error.message} with connection in channel ${this.voiceChannel?.id}`);
+      logger.error(`Error: ${error.message} with connection in channel ${this.voiceChannel?.id}`);
     });
 
     this.audioPlayer = createAudioPlayer({
@@ -52,22 +52,22 @@ export class VoiceInstance {
 
     this.activeSubscription = this.connection.subscribe(this.audioPlayer);
     if (typeof this.activeSubscription === 'undefined') {
-      this.logger.error(`Could not subscribe the VoiceConnection in ${this.voiceChannel.id} to an audio player!`);
+      logger.error(`Could not subscribe the VoiceConnection in ${this.voiceChannel.id} to an audio player!`);
       this.connection.destroy();
     }
 
     this.audioPlayer.on('error', error => {
       let metadata: ResourceMetadata = error.resource.metadata as ResourceMetadata;
-      this.logger.error(`Error: ${error.message} when playing resource ${metadata.url}`);
+      logger.error(`Error: ${error.message} when playing resource ${metadata.url}`);
       this.playNext();
     });
 
     this.audioPlayer.on(AudioPlayerStatus.Idle, () => {
-      this.logger.verbose(`AudioPlayer is idle. Attempting to play next song.`);
+      logger.verbose(`AudioPlayer is idle. Attempting to play next song.`);
       let playingNextSong: boolean = this.playNext();
 
       if (!playingNextSong) {
-        this.logger.info(`Setting new timer to leave channel in ${DEFAULT_VOICE_ONLINE_TIME_MS} ms`);
+        logger.info(`Setting new timer to leave channel in ${DEFAULT_VOICE_ONLINE_TIME_MS} ms`);
 
         this.removeTimer();
         this.timer = setTimeout(() => this.disconnect(), DEFAULT_VOICE_ONLINE_TIME_MS);
@@ -76,7 +76,7 @@ export class VoiceInstance {
     });
 
     this.audioPlayer.on(AudioPlayerStatus.Playing, () => {
-      this.logger.verbose('Clearing timer as player is now playing')
+      logger.verbose('Clearing timer as player is now playing')
       this.removeTimer();
     });
   }
@@ -90,13 +90,13 @@ export class VoiceInstance {
     if (this.audioPlayer) {
       let next = this.audioQueue.shift();
       if (!next) {
-        this.logger.verbose(`Queue is empty. Not playing anything.`);
+        logger.verbose(`Queue is empty. Not playing anything.`);
         this.audioPlayer.stop();
         return false;
       } else {
         let metadata: ResourceMetadata = next.metadata as ResourceMetadata;
         metadata.commandChannel.send(`Now playing "${metadata.title}" by ${metadata.authorName}`);
-        this.logger.verbose(`Now playing ${metadata.url}`);
+        logger.verbose(`Now playing ${metadata.url}`);
         this.audioPlayer.play(next);
         return true;
       }
@@ -134,7 +134,7 @@ export class VoiceInstance {
     // invariant: joinChannel must be called
     let metadata: ResourceMetadata = resource.metadata as ResourceMetadata;
     if (this.audioPlayer!) {
-      this.logger.verbose(`Now playing ${metadata.url}`);
+      logger.verbose(`Now playing ${metadata.url}`);
       this.audioPlayer.play(resource);
     } else {
       throw 'Adobot must be in a channel before running this';

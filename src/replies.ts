@@ -1,8 +1,11 @@
 import { FADI_PASTA, HELP_TEXT, FADI_SECRETARY_URL } from './const.js';
 import { Message, MessageAttachment } from 'discord.js';
-import { Logger } from 'winston';
+import { loggers } from 'winston';
 
-export function fuckTyler(msg: Message, params: Array<string>, logger: Logger) {
+const logger = loggers.get('global_logger');
+
+
+export function fuckTyler(msg: Message, params: Array<string>) {
   logger.info(`Sent a message saying fuck Tyler`);
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
     `channel ${msg.channel.id}`);
@@ -10,7 +13,7 @@ export function fuckTyler(msg: Message, params: Array<string>, logger: Logger) {
   msg.channel.send('Yo fuck Tyler');
 }
 
-export function unknown(msg: Message, params: Array<string>, logger: Logger) {
+export function unknown(msg: Message, params: Array<string>) {
   logger.info(`Sent response after receiving an unknown message`);
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} ` +
     `channel ${msg.channel.id}`);
@@ -19,7 +22,7 @@ export function unknown(msg: Message, params: Array<string>, logger: Logger) {
 }
 
 
-export function pizza(msg: Message, params: Array<string>, logger: Logger) {
+export function pizza(msg: Message, params: Array<string>) {
   logger.info('Sent Fadi Copypasta');
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
     `channel ${msg.channel.id}`);
@@ -27,7 +30,7 @@ export function pizza(msg: Message, params: Array<string>, logger: Logger) {
   msg.channel.send(FADI_PASTA);
 }
 
-export function help(msg: Message, params: Array<string>, logger: Logger) {
+export function help(msg: Message, params: Array<string>) {
   logger.info('Sent help');
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
     `channel ${msg.channel.id}`);
@@ -35,7 +38,7 @@ export function help(msg: Message, params: Array<string>, logger: Logger) {
   msg.channel.send(HELP_TEXT);
 }
 
-export function voteForFadi(msg: Message, params: Array<string>, logger: Logger) {
+export function voteForFadi(msg: Message, params: Array<string>) {
   logger.info('Sent Fadi campaign poster');
   logger.verbose(`Response was to ${msg.author.tag} in ${msg.channel.type} `,
     `channel ${msg.channel.id}`);
