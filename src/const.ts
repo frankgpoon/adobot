@@ -8,8 +8,9 @@ export const HELP_TEXT: string = ">>> **Hello! My name is Adobot!** \n" +
                          "`~fadi`: I will do anything necessary to improve this school" +
                          "\nVoice commands: \n" +
                          "`~candle`: AAAAAAAAAAAAAAAA \n" +
-                         "`~play <url>`: Play the given link (only supports YouTube) \n" +
-                         "\n**In the future I will learn to queue music and give recipes for adobo!**"
+                         "`~play <url>`, `~p <url>`: Play the given link or add it to the queue (only supports YouTube)\n" +
+                         "`~next`, `~n`, `~skip`: Skips to the next song \n" +
+                         "\n**In the future I will learn to give recipes for adobo!**"
 
 export const FADI_PASTA: string = "LOOK YOU PIECE OF SHIT NO ONE PRANKS ME AND IM " + 
                   "NOT YOUR LITTLE ASS TO BUY FOR YOU OR THE OTHERS PIZZA " + 
