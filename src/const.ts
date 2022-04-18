@@ -22,3 +22,6 @@ export const FADI_PASTA: string = "LOOK YOU PIECE OF SHIT NO ONE PRANKS ME AND I
 
 export const CANDLE_VIDEO_URL: string = "https://www.youtube.com/watch?v=fwkCsLk3NBs";
 export const FADI_SECRETARY_URL: string = "https://i.imgur.com/T6wcklq.jpg";
+
+export const HELLO_X_RYAN_URL: string = "https://www.youtube.com/watch?v=VpuCJ_aZkfM";
+export const HELLO_X_RYAN_CHANCE_PERCENT = 10;

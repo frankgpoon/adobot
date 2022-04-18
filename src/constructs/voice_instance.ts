@@ -227,4 +227,39 @@ export class VoiceInstance {
     this.timer = null;
   }
 
+
+  interrupt(resource: AudioResource, durationInMilliseconds?: number) {
+    if (this.audioPlayer) {
+      this.interruptPlayer = createAudioPlayer({
+        behaviors: {
+          noSubscriber: NoSubscriberBehavior.Pause,
+        },
+      });
+
+      this.activeSubscription?.unsubscribe();
+      this.activeSubscription = this.connection?.subscribe(this.interruptPlayer);
+
+      this.interruptPlayer.on(AudioPlayerStatus.Idle, () => {
+        this.activeSubscription?.unsubscribe();
+        this.activeSubscription = this.connection?.subscribe(this.audioPlayer!);
+        
+        this.interruptPlayer?.stop();
+        this.interruptPlayer = null;
+      })
+
+      this.interruptPlayer.play(resource);
+      if (durationInMilliseconds) {
+        setTimeout(() => {
+          this.interruptPlayer!.state = {
+            status: AudioPlayerStatus.Idle
+          };
+        }, 
+        durationInMilliseconds)
+      }
+    } else {
+      throw 'Adobot must be in a channel before running this';
+    }
+    
+  }
+
 }

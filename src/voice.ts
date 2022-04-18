@@ -1,5 +1,5 @@
 import ytdl from 'discord-ytdl-core';
-import { CANDLE_VIDEO_URL } from './const.js'
+import { CANDLE_VIDEO_URL, HELLO_X_RYAN_CHANCE_PERCENT, HELLO_X_RYAN_URL } from './const.js'
 import { unknown } from './replies.js'
 import {  
   createAudioResource,
@@ -75,30 +75,30 @@ export async function next(msg: Message, params: Array<string>, voiceInstances: 
 
 export async function candle(msg: Message, params: Array<string>, voiceInstances: Record<string, VoiceInstance>) {
   logger.verbose(`Received request to play candle video.`);
-  msg.reply(`Hey guys what's up this is HelloXRyan :)`);
 
-  // let validCommand = validateVoiceCommand(msg, params, logger);
-  // if (!validCommand) {
-  //   return;
-  // }
+  let validCommand = validateVoiceCommand(msg, params);
+  if (!validCommand) {
+    return;
+  }
 
-  // // Only try to join the sender's voice channel if they are in one themselves
-  // let channel = msg.member!.voice.channel;
+  // Only try to join the sender's voice channel if they are in one themselves
+  let channel = msg.member!.voice.channel;
 
-  // let currentInstance = getVoiceInstance(voiceInstances, channel!, logger);
-  // let resource = await createResourceFromYoutubeVideo(CANDLE_VIDEO_URL, msg);
+  let currentInstance = getVoiceInstance(voiceInstances, channel!);
 
-  // let position = currentInstance.interrupt(resource);
-
-  // let replyText;
-  // let metadata = resource.metadata as ResourceMetadata;
-  // if (position === 0) {
-  //   replyText = `Now playing "${metadata.title}" by ${metadata.authorName}`;
-  // } else {
-  //   replyText = `Queued "${metadata.title}" by ${metadata.authorName} at position ${position}`;
-  // } 
-
-  // msg.reply(replyText);
+  let roll =  Math.floor(Math.random() * 100);
+  let tylerMessedUp = roll < HELLO_X_RYAN_CHANCE_PERCENT;
+  logger.verbose(`Roll for playing HelloXRyan video was ${roll}/100`);
+  
+  if (tylerMessedUp) {
+    let resource = await createResourceFromYoutubeVideo(HELLO_X_RYAN_URL, msg);
+    currentInstance.interrupt(resource, 5_000);
+    msg.reply(`Uh oh! Looks like Tyler messed up typing the video link again!`);
+  } else {
+    let resource = await createResourceFromYoutubeVideo(CANDLE_VIDEO_URL, msg);
+    currentInstance.interrupt(resource);
+    msg.react('🕯');
+  }
 }
 
 
