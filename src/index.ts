@@ -3,8 +3,8 @@ import { loggers, transports } from 'winston';
 import { format } from 'logform';
 
 import { parseUserMessage } from './commands.js';
-import { VoiceInstanceDao } from './constructs/dao/voice_instance/base_dao.js';
-import { VoiceInstanceInMemoryDao } from './constructs/dao/voice_instance/in_memory_dao.js';
+import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
+import { VoiceInstanceInMemoryDao } from './dao/voice_instance/in_memory_dao.js';
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
 const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';

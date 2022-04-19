@@ -1,4 +1,4 @@
-import { VoiceInstance } from "../../../constructs/voice_instance";
+import { VoiceInstance } from "../../constructs/voice_instance";
 
 export interface VoiceInstanceDao {
   /**

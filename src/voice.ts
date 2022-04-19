@@ -9,7 +9,7 @@ import { Message, VoiceBasedChannel } from 'discord.js';
 import { loggers } from 'winston';
 import { VoiceInstance } from './constructs/voice_instance';
 import { ResourceMetadata } from './constructs/resource_metadata.js';
-import { VoiceInstanceDao } from './constructs/dao/voice_instance/base_dao.js';
+import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
 
 
 const logger = loggers.get('global_logger');

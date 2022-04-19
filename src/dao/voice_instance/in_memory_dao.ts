@@ -1,4 +1,4 @@
-import { VoiceInstance } from "src/constructs/voice_instance";
+import { VoiceInstance } from "../../constructs/voice_instance";
 import { VoiceInstanceDao } from "./base_dao";
 
 export class VoiceInstanceInMemoryDao implements VoiceInstanceDao {
@@ -16,7 +16,8 @@ export class VoiceInstanceInMemoryDao implements VoiceInstanceDao {
     }
   }
   put(guildId: string, voiceInstance: VoiceInstance): boolean {
-    throw new Error("Method not implemented.");
+    this.voiceInstanceMap[guildId] = voiceInstance;
+    return true;
   }
 
   contains(guildId: string): boolean {

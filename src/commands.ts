@@ -4,8 +4,7 @@ import { Message } from 'discord.js';
 import { loggers } from 'winston';
 import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
 import { candle, play, next } from './voice.js';
-import { VoiceInstance } from "./constructs/voice_instance";
-import { VoiceInstanceDao } from './constructs/dao/voice_instance/base_dao.js';
+import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
 
 
 const logger = loggers.get('global_logger');
@@ -36,7 +35,7 @@ export async function parseUserMessage(msg: Message, voiceInstanceDao: VoiceInst
 
     if (msg.channel.type === 'DM') {
       logger.verbose('Message was a DM - replying');
-      commands['unknown'](msg, [], logger);
+      commands['unknown'](msg, []);
     } else {
       logger.verbose('Message was not a DM - ignoring');
     }
@@ -47,9 +46,10 @@ export async function parseUserMessage(msg: Message, voiceInstanceDao: VoiceInst
 
     if (!commands.hasOwnProperty(commandName)) {
       logger.warn(`Command unknown from ${msg.author.tag}`);
-      commands[''](msg, [], logger);
+      commands[''](msg, []);
     } else {
-      await commands[commandName](msg, params, logger, voiceInstanceDao);
+  
+      await commands[commandName](msg, params, voiceInstanceDao);
     }
   }
 }
