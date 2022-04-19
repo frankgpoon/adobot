@@ -3,7 +3,8 @@ import { loggers, transports } from 'winston';
 import { format } from 'logform';
 
 import { parseUserMessage } from './commands.js';
-import { VoiceInstance } from "./constructs/voice_instance";
+import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
+import { VoiceInstanceInMemoryDao } from './dao/voice_instance/in_memory_dao.js';
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
 const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';
@@ -27,7 +28,7 @@ const client: Client = new Client({
 });
 
 
-const voiceInstances: Record<string, VoiceInstance> = {};
+const voiceInstanceDao: VoiceInstanceDao = new VoiceInstanceInMemoryDao();
 
 logger.info('Starting up Adobot');
 // logger2.info('Starting up Adobot');
@@ -46,7 +47,7 @@ client.on('ready', () => {
 client.on('messageCreate', async (msg: Message) => {
   if (msg.author.id !== client.user!.id) {
     // ignores messages sent by Adobot
-    await parseUserMessage(msg, voiceInstances);
+    await parseUserMessage(msg, voiceInstanceDao);
   }
 
 });
