@@ -9,12 +9,13 @@ import { Message, VoiceBasedChannel } from 'discord.js';
 import { loggers } from 'winston';
 import { VoiceInstance } from './constructs/voice_instance';
 import { ResourceMetadata } from './constructs/resource_metadata.js';
+import { VoiceInstanceDao } from './constructs/dao/voice_instance/base_dao.js';
 
 
 const logger = loggers.get('global_logger');
 
 
-export async function play(msg: Message, params: Array<string>, voiceInstances: Record<string, VoiceInstance>) {
+export async function play(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
   logger.verbose(`Received request to play YouTube video.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -33,7 +34,7 @@ export async function play(msg: Message, params: Array<string>, voiceInstances: 
   // Only try to join the sender's voice channel if they are in one themselves
   let channel = msg.member!.voice.channel;
   
-  let currentInstance = getVoiceInstance(voiceInstances, channel!);
+  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
   let resource = await createResourceFromYoutubeVideo(videoUrl, msg);
 
   let position = currentInstance.playOrQueue(resource);
@@ -50,7 +51,7 @@ export async function play(msg: Message, params: Array<string>, voiceInstances: 
 }
 
 
-export async function next(msg: Message, params: Array<string>, voiceInstances: Record<string, VoiceInstance>) {
+export async function next(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
   logger.verbose(`Received request to skip to next song.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -61,7 +62,7 @@ export async function next(msg: Message, params: Array<string>, voiceInstances: 
   let channel = msg.member!.voice.channel;
   logger.info(`Attempting to join voice channel ${channel!.id}`);
 
-  let currentInstance = getVoiceInstance(voiceInstances, channel!);
+  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
   
   let playingNewResource = currentInstance.playNext();
 
@@ -73,7 +74,7 @@ export async function next(msg: Message, params: Array<string>, voiceInstances: 
 }
 
 
-export async function candle(msg: Message, params: Array<string>, voiceInstances: Record<string, VoiceInstance>) {
+export async function candle(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
   logger.verbose(`Received request to play candle video.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -84,7 +85,7 @@ export async function candle(msg: Message, params: Array<string>, voiceInstances
   // Only try to join the sender's voice channel if they are in one themselves
   let channel = msg.member!.voice.channel;
 
-  let currentInstance = getVoiceInstance(voiceInstances, channel!);
+  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
 
   let roll =  Math.floor(Math.random() * 100);
   let tylerMessedUp = roll < HELLO_X_RYAN_CHANCE_PERCENT;
@@ -102,27 +103,27 @@ export async function candle(msg: Message, params: Array<string>, voiceInstances
 }
 
 
-function getVoiceInstance(voiceInstances: Record<string, VoiceInstance>, channel: VoiceBasedChannel): VoiceInstance {
+function getVoiceInstance(voiceInstanceDao: VoiceInstanceDao, channel: VoiceBasedChannel): VoiceInstance {
   
   logger.info(`Attempting to join voice channel ${channel.id}`);
 
   let currentInstance;
-  if (voiceInstances[channel.guild.id]) {
+  if (voiceInstanceDao.contains(channel.guild.id)) {
     logger.verbose(`Adobot is already in a channel in this guild.`);
-    currentInstance = voiceInstances[channel.guild.id];
-    if (channel.id !== currentInstance.voiceChannel?.id) {
+    currentInstance = voiceInstanceDao.get(channel.guild.id);
+    if (channel.id !== currentInstance!.voiceChannel?.id) {
       // adobot is playing in another channel in this guild, join this one
-      logger.verbose(`Switching channels from ${currentInstance.voiceChannel?.id} to ${channel.id}.`);
-      currentInstance.joinChannel(channel);
+      logger.verbose(`Switching channels from ${currentInstance!.voiceChannel?.id} to ${channel.id}.`);
+      currentInstance!.joinChannel(channel);
     }
     // adobot is in the same channel, do nothing
   } else {
     // adobot has not joined a channel in this guild
     currentInstance = new VoiceInstance();
-    voiceInstances[channel.guild.id] = currentInstance;
+    voiceInstanceDao.put(channel.guild.id, currentInstance);
     currentInstance.joinChannel(channel);
   }
-  return currentInstance;
+  return currentInstance!;
 }
 
 

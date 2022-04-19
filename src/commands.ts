@@ -5,6 +5,7 @@ import { loggers } from 'winston';
 import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
 import { candle, play, next } from './voice.js';
 import { VoiceInstance } from "./constructs/voice_instance";
+import { VoiceInstanceDao } from './constructs/dao/voice_instance/base_dao.js';
 
 
 const logger = loggers.get('global_logger');
@@ -25,7 +26,7 @@ commands['n'] = next;
 commands['skip'] = next;
 
 
-export async function parseUserMessage(msg: Message, voiceInstances?: Record<string, VoiceInstance>) {
+export async function parseUserMessage(msg: Message, voiceInstanceDao: VoiceInstanceDao) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
     ` channel ${msg.channel.id}`);
 
@@ -48,7 +49,7 @@ export async function parseUserMessage(msg: Message, voiceInstances?: Record<str
       logger.warn(`Command unknown from ${msg.author.tag}`);
       commands[''](msg, [], logger);
     } else {
-      await commands[commandName](msg, params, logger, voiceInstances);
+      await commands[commandName](msg, params, logger, voiceInstanceDao);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { joinVoiceChannel, createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus, AudioPlayer, AudioResource, VoiceConnection, PlayerSubscription, AudioPlayerIdleState } from '@discordjs/voice';
+import { joinVoiceChannel, createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus, AudioPlayer, AudioResource, VoiceConnection, PlayerSubscription, AudioPlayerIdleState, DiscordGatewayAdapterCreator } from '@discordjs/voice';
 import { BaseGuildVoiceChannel } from 'discord.js';
 import { DEFAULT_VOICE_ONLINE_TIME_MS } from '../const';
 import { loggers } from 'winston';
@@ -37,7 +37,7 @@ export class VoiceInstance {
     this.connection = joinVoiceChannel({
       channelId: this.voiceChannel.id,
       guildId: this.voiceChannel.guild.id,
-      adapterCreator: this.voiceChannel.guild.voiceAdapterCreator,
+      adapterCreator: this.voiceChannel.guild.voiceAdapterCreator as DiscordGatewayAdapterCreator,
     });
 
     this.connection.on('error', error => {
