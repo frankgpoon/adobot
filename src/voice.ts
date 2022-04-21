@@ -1,3 +1,5 @@
+import { container } from '@sapphire/framework';
+
 import ytdl from 'discord-ytdl-core';
 import { CANDLE_VIDEO_URL, HELLO_X_RYAN_CHANCE_PERCENT, HELLO_X_RYAN_URL } from './const.js'
 import { unknown } from './replies.js'
@@ -15,7 +17,7 @@ import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
 const logger = loggers.get('global_logger');
 
 
-export async function play(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
+export async function play(msg: Message, params: Array<string>) {
   logger.verbose(`Received request to play YouTube video.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -34,7 +36,7 @@ export async function play(msg: Message, params: Array<string>, voiceInstanceDao
   // Only try to join the sender's voice channel if they are in one themselves
   let channel = msg.member!.voice.channel;
   
-  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
+  let currentInstance = getVoiceInstance(container.voiceInstanceDao, channel!);
   let resource = await createResourceFromYoutubeVideo(videoUrl, msg);
 
   let position = currentInstance.playOrQueue(resource);
@@ -51,7 +53,7 @@ export async function play(msg: Message, params: Array<string>, voiceInstanceDao
 }
 
 
-export async function next(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
+export async function next(msg: Message, params: Array<string>) {
   logger.verbose(`Received request to skip to next song.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -62,7 +64,7 @@ export async function next(msg: Message, params: Array<string>, voiceInstanceDao
   let channel = msg.member!.voice.channel;
   logger.info(`Attempting to join voice channel ${channel!.id}`);
 
-  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
+  let currentInstance = getVoiceInstance(container.voiceInstanceDao, channel!);
   
   let playingNewResource = currentInstance.playNext();
 
@@ -74,7 +76,7 @@ export async function next(msg: Message, params: Array<string>, voiceInstanceDao
 }
 
 
-export async function candle(msg: Message, params: Array<string>, voiceInstanceDao: VoiceInstanceDao) {
+export async function candle(msg: Message, params: Array<string>) {
   logger.verbose(`Received request to play candle video.`);
 
   let validCommand = validateVoiceCommand(msg, params);
@@ -85,7 +87,7 @@ export async function candle(msg: Message, params: Array<string>, voiceInstanceD
   // Only try to join the sender's voice channel if they are in one themselves
   let channel = msg.member!.voice.channel;
 
-  let currentInstance = getVoiceInstance(voiceInstanceDao, channel!);
+  let currentInstance = getVoiceInstance(container.voiceInstanceDao, channel!);
 
   let roll =  Math.floor(Math.random() * 100);
   let tylerMessedUp = roll < HELLO_X_RYAN_CHANCE_PERCENT;

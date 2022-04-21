@@ -22,7 +22,7 @@ commands['n'] = next;
 commands['skip'] = next;
 
 
-export async function parseUserMessage(msg: Message, voiceInstanceDao: VoiceInstanceDao) {
+export async function parseUserMessage(msg: Message) {
   logger.info(`Received message from ${msg.author.tag} in ${msg.channel.type}`,
     ` channel ${msg.channel.id}`);
 
@@ -46,7 +46,7 @@ export async function parseUserMessage(msg: Message, voiceInstanceDao: VoiceInst
       commands[''](msg, []);
     } else {
   
-      await commands[commandName](msg, params, voiceInstanceDao);
+      await commands[commandName](msg, params);
     }
   }
 }
