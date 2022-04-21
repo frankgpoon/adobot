@@ -1,4 +1,6 @@
-import { Client, Intents, Message } from 'discord.js';
+import { SapphireClient } from '@sapphire/framework';
+
+import { Intents, Message } from 'discord.js';
 import { loggers, transports } from 'winston';
 import { format } from 'logform';
 
@@ -17,14 +19,15 @@ logger.level = DEBUG_LEVEL;
 
 
 // create client
-const client: Client = new Client({
+const client = new SapphireClient({
   intents: [
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.GUILD_VOICE_STATES
-  ]
+  ],
+  defaultPrefix: '!'
 });
 
 

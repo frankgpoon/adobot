@@ -2,7 +2,7 @@ const commands: Record<string, Function> = {};
 
 import { Message } from 'discord.js';
 import { loggers } from 'winston';
-import { unknown, fuckTyler, pizza, help, voteForFadi } from './replies.js';
+import { unknown } from './replies.js';
 import { candle, play, next } from './voice.js';
 import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
 
@@ -11,10 +11,7 @@ const logger = loggers.get('global_logger');
 
 
 commands[''] = unknown;
-commands['help'] = help;
-commands['ft'] = fuckTyler;
-commands['pizza'] = pizza;
-commands['fadi'] = voteForFadi;
+
 commands['candle'] = candle;
 
 commands['play'] = play;
