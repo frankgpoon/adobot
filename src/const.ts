@@ -5,7 +5,7 @@ export const HELP_TEXT: string = ">>> **Hello! My name is Adobot!** \n" +
                          "`~help`: This text \n" +
                          "`~pizza`: The infamous Fadi copypasta \n" + 
                          "`~ft`: Fuck Tyler \n" +
-                         "`~fadi`: I will do anything necessary to improve this school" +
+                         "`~vote`: I will do anything necessary to improve this school" +
                          "\nVoice commands: \n" +
                          "`~candle`: AAAAAAAAAAAAAAAA \n" +
                          "`~play <url>`, `~p <url>`: Play the given link or add it to the queue (only supports YouTube)\n" +

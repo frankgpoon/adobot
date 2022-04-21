@@ -1,10 +1,9 @@
-import { Client, Intents, Message } from 'discord.js';
+import { AdobotClient } from './client/adobot_client.js';
+
+
 import { loggers, transports } from 'winston';
 import { format } from 'logform';
 
-import { parseUserMessage } from './commands.js';
-import { VoiceInstanceDao } from './dao/voice_instance/base_dao.js';
-import { VoiceInstanceInMemoryDao } from './dao/voice_instance/in_memory_dao.js';
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
 const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';
@@ -17,18 +16,9 @@ logger.level = DEBUG_LEVEL;
 
 
 // create client
-const client: Client = new Client({
-  intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_VOICE_STATES
-  ]
-});
+const client = new AdobotClient();
 
 
-const voiceInstanceDao: VoiceInstanceDao = new VoiceInstanceInMemoryDao();
 
 logger.info('Starting up Adobot');
 // logger2.info('Starting up Adobot');
@@ -43,14 +33,6 @@ client.on('ready', () => {
   client.user!.setActivity('adobo vids - yum!', { type: 'WATCHING' })
 });
 
-// parse messages
-client.on('messageCreate', async (msg: Message) => {
-  if (msg.author.id !== client.user!.id) {
-    // ignores messages sent by Adobot
-    await parseUserMessage(msg, voiceInstanceDao);
-  }
-
-});
 
 client.on('error', (err) => {
   logger.error(err);
