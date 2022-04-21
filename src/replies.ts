@@ -1,5 +1,4 @@
-import { FADI_PASTA, HELP_TEXT, FADI_SECRETARY_URL } from './const.js';
-import { Message, MessageAttachment } from 'discord.js';
+import { Message } from 'discord.js';
 import { loggers } from 'winston';
 
 const logger = loggers.get('global_logger');
