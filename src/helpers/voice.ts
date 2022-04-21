@@ -1,5 +1,4 @@
 import ytdl from 'discord-ytdl-core';
-import { unknown } from '../replies.js'
 import {  
   createAudioResource,
   StreamType ,
@@ -65,41 +64,4 @@ export async function createResourceFromYoutubeVideo(videoUrl: string, msg: Mess
 
   resource.volume!.setVolume(0.25);
   return resource;
-}
-
-/**
- * Validates a command and replies if it is invalid
- * @param msg message
- * @param params parameters of he command
- * @param logger logger
- * @returns true if the message is valid and false otherwise
- */
-export function validateVoiceCommand(msg: Message, params: Array<string>): boolean {
-  if (!msg.guild) {
-    logger.verbose('Command was not called in a server');
-    unknown(msg, params);
-    return false;
-  }
-
-  if (!msg.member!.voice.channel) {
-    logger.warn(`${msg.author.tag} was not in a voice channel when ` + 
-      `-play was called`);
-  
-    msg.reply(`Please join a voice channel before doing this you stupid adobo`);
-    return false;
-  }
-
-  return true;
-}
-
-
-export function isValidUrl(urlStr: string): boolean {
-  let url;
-  try {
-    url = new URL(urlStr);
-  } catch (_) {
-    return false;  
-  }
-
-  return url.protocol === "http:" || url.protocol === "https:";
 }

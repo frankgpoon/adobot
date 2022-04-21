@@ -3,7 +3,7 @@ import { Message } from 'discord.js';
 import { CANDLE_VIDEO_URL, HELLO_X_RYAN_CHANCE_PERCENT, HELLO_X_RYAN_URL, HELP_TEXT } from '../../const';
 
 import { loggers } from 'winston';
-import { validateVoiceCommand, getVoiceInstance, createResourceFromYoutubeVideo } from '../../helpers/voice';
+import { getVoiceInstance, createResourceFromYoutubeVideo } from '../../helpers/voice';
 const logger = loggers.get('global_logger');
 
 export class CandleCommand extends Command {
@@ -11,18 +11,15 @@ export class CandleCommand extends Command {
     super(context, {
       ...options,
       name: 'candle',
-      description: 'AAAAAAAAAAAAAAAA'
+      description: 'AAAAAAAAAAAAAAAA',
+      preconditions: ['in_voice_channel'],
+      runIn: CommandOptionsRunTypeEnum.GuildAny
     });
   }
 
 
   async messageRun(message: Message<boolean>) {
     logger.verbose(`Received request to play candle video.`);
-
-    let validCommand = validateVoiceCommand(message, []);
-    if (!validCommand) {
-      return;
-    }
 
     // Only try to join the sender's voice channel if they are in one themselves
     let channel = message.member!.voice.channel;

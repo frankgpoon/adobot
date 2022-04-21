@@ -1,6 +1,6 @@
-import { Command, container } from '@sapphire/framework';
+import { Command, CommandOptionsRunTypeEnum, container } from '@sapphire/framework';
 import { Message } from 'discord.js';
-import { validateVoiceCommand, getVoiceInstance } from '../../helpers/voice';
+import { getVoiceInstance } from '../../helpers/voice';
 
 import { loggers } from 'winston';
 const logger = loggers.get('global_logger');
@@ -11,17 +11,14 @@ export class NextCommand extends Command {
       ...options,
       name: 'next',
       aliases: ['n', 'skip'],
-      description: 'Skips to the next song'
+      description: 'Skips to the next song',
+      preconditions: ['in_voice_channel'],
+      runIn: CommandOptionsRunTypeEnum.GuildAny
     });
   }
 
   messageRun(message: Message<boolean>) {
     logger.verbose(`Received request to skip to next song.`);
-
-    let validCommand = validateVoiceCommand(message, []);
-    if (!validCommand) {
-      return;
-    }
     
     let channel = message.member!.voice.channel;
     logger.info(`Attempting to join voice channel ${channel!.id}`);
