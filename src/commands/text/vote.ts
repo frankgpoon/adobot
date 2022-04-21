@@ -1,6 +1,6 @@
 import { Args, Command, CommandContext } from '@sapphire/framework';
 import { Message } from 'discord.js';
-import { FADI_SECRETARY_URL } from '../const';
+import { FADI_SECRETARY_URL } from '../../const';
 
 import { loggers } from 'winston';
 const logger = loggers.get('global_logger');

@@ -1,6 +1,6 @@
 import { Command } from '@sapphire/framework';
 import { Message } from 'discord.js';
-import { FADI_PASTA } from '../const';
+import { FADI_PASTA } from '../../const';
 
 import { loggers } from 'winston';
 const logger = loggers.get('global_logger');

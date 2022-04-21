@@ -1,6 +1,6 @@
 import { Args, Command, CommandContext } from '@sapphire/framework';
 import { Message } from 'discord.js';
-import { HELP_TEXT } from '../const';
+import { HELP_TEXT } from '../../const';
 
 import { loggers } from 'winston';
 const logger = loggers.get('global_logger');
