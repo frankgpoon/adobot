@@ -1,6 +1,5 @@
 import { Precondition } from '@sapphire/framework';
 import type { Message } from 'discord.js';
-import { unknown } from '../helpers/replies';
 import { loggers } from 'winston';
 
 const logger = loggers.get('global_logger');
