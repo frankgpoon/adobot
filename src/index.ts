@@ -1,5 +1,4 @@
-import { AdobotClient } from './client/adobot_client.js';
-
+import { AdobotClient } from './client/adobot_client.js'
 
 import { loggers, transports } from 'winston';
 import { format } from 'logform';
@@ -17,18 +16,13 @@ logger.level = DEBUG_LEVEL;
 
 // create client
 const client = new AdobotClient();
-
-
-
 logger.info('Starting up Adobot');
-// logger2.info('Starting up Adobot');
+
 
 // logging stuff when adobot signs in
 client.on('ready', () => {
   logger.info(`Logged in as ${client.user!.tag}!`);
-  // logger2.info(`Logged in as ${client.user!.tag}!`);
   logger.verbose(`Setting up status`);
-  // logger2.verbose(`Setting up status`);
 
   client.user!.setActivity('adobo vids - yum!', { type: 'WATCHING' })
 });
@@ -40,9 +34,9 @@ client.on('error', (err) => {
   process.exit();
 })
 
+
 // login with given token
 client.login(DISCORD_TOKEN);
-
 
 
 process.on('SIGINT', () => {
