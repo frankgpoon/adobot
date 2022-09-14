@@ -17,8 +17,7 @@ export class PizzaCommand extends Command {
 
   public override messageRun(message: Message<boolean>) {
     logger.info('Sent Fadi Copypasta');
-    logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} `,
-      `channel ${message.channel.id}`);
+    logger.verbose(`Response was to ${message.author.tag} in channel ${message.channel.id}`);
 
     message.channel.send(FADI_PASTA);
   }

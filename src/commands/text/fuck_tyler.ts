@@ -16,8 +16,7 @@ export class FuckTylerCommand extends Command {
 
   public override messageRun(message: Message<boolean>) {
     logger.info(`Sent a message saying fuck Tyler`);
-    logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} `,
-      `channel ${message.channel.id}`);
+    logger.verbose(`Response was to ${message.author.tag} in channel ${message.channel.id}`);
 
     return message.channel.send('Yo fuck Tyler');
   }

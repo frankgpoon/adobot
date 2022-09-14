@@ -17,8 +17,7 @@ export class HelpCommand extends Command {
 
   public override messageRun(message: Message<boolean>) {
     logger.info('Sent help');
-    logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} `,
-      `channel ${message.channel.id}`);
+    logger.verbose(`Response was to ${message.author.tag} in channel ${message.channel.id}`);
 
     message.channel.send(HELP_TEXT);
   }

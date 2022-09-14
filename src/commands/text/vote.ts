@@ -16,8 +16,7 @@ export class VoteCommand extends Command {
 
   public override messageRun(message: Message<boolean>) {
     logger.info('Sent Fadi campaign poster');
-    logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} `,
-      `channel ${message.channel.id}`);
+    logger.verbose(`Response was to ${message.author.tag} in channel ${message.channel.id}`);
     message.channel.send({
       files: [FADI_SECRETARY_URL]
     });
