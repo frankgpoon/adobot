@@ -1,4 +1,4 @@
-import { Listener, UserError, CommandDeniedPayload } from '@sapphire/framework';
+import { Listener, UserError, MessageCommandDeniedPayload } from '@sapphire/framework';
 import { loggers } from 'winston';
 
 const logger = loggers.get('global_logger');
@@ -13,7 +13,7 @@ export class CommandDeniedListener extends Listener {
   }
 
   
-  public run(error: UserError, { message }: CommandDeniedPayload) {
+  public run(error: UserError, { message }: MessageCommandDeniedPayload) {
     return message.reply(error.message);
   }
 }

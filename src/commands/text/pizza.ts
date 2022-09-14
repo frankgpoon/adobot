@@ -7,7 +7,7 @@ const logger = loggers.get('global_logger');
 
 export class PizzaCommand extends Command {
   
-  constructor(context: Command.Context, options: Command.Options) {
+  public constructor(context: Command.Context, options: Command.Options) {
     super(context, {
       ...options,
       name: 'pizza',
@@ -15,7 +15,7 @@ export class PizzaCommand extends Command {
     });
   }
 
-  messageRun(message: Message<boolean>) {
+  public override messageRun(message: Message<boolean>) {
     logger.info('Sent Fadi Copypasta');
     logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} `,
       `channel ${message.channel.id}`);

@@ -1,4 +1,4 @@
-import { Listener, UnknownCommandPayload } from '@sapphire/framework';
+import { Listener, UnknownMessageCommandPayload } from '@sapphire/framework';
 import { loggers } from 'winston';
 
 const logger = loggers.get('global_logger');
@@ -13,7 +13,7 @@ export class UnknownCommandListener extends Listener {
   }
 
   
-  public run({ message }: UnknownCommandPayload) {
+  public run({ message }: UnknownMessageCommandPayload) {
     logger.info(`Sent response after receiving an unknown message`);
     logger.verbose(`Response was to ${message.author.tag} in ${message.channel.type} ` +
       `channel ${message.channel.id}`);

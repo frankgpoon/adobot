@@ -8,7 +8,7 @@ import ytdl from 'ytdl-core';
 const logger = loggers.get('global_logger');
 
 export class PlayCommand extends Command {
-  constructor(context: Command.Context, options: Command.Options) {
+  public constructor(context: Command.Context, options: Command.Options) {
     super(context, {
       ...options,
       name: 'play',
@@ -19,7 +19,7 @@ export class PlayCommand extends Command {
     });
   }
 
-  async messageRun(message: Message<boolean>, args: Args) {
+  public override async messageRun(message: Message<boolean>, args: Args) {
     logger.verbose(`Received request to play YouTube video.`);
 
     let videoUrl = await args.pick(PlayCommand.youtubeUrl);

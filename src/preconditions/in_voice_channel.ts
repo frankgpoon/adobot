@@ -5,7 +5,7 @@ import { loggers } from 'winston';
 const logger = loggers.get('global_logger');
 
 export class InVoiceChannelPrecondition extends Precondition {
-  public run(message: Message) {
+  public override messageRun(message: Message) {
   
     if (!message.member!.voice.channel) {
       logger.warn(`${message.author.tag} was not in a voice channel when ` + 

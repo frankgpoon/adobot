@@ -7,7 +7,7 @@ import { getVoiceInstance, createResourceFromYoutubeVideo } from '../../helpers/
 const logger = loggers.get('global_logger');
 
 export class CandleCommand extends Command {
-  constructor(context: Command.Context, options: Command.Options) {
+  public constructor(context: Command.Context, options: Command.Options) {
     super(context, {
       ...options,
       name: 'candle',
@@ -18,7 +18,7 @@ export class CandleCommand extends Command {
   }
 
 
-  async messageRun(message: Message<boolean>) {
+  public override async messageRun(message: Message<boolean>) {
     logger.verbose(`Received request to play candle video.`);
 
     // Only try to join the sender's voice channel if they are in one themselves

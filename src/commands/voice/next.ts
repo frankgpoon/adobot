@@ -6,7 +6,7 @@ import { loggers } from 'winston';
 const logger = loggers.get('global_logger');
 
 export class NextCommand extends Command {
-  constructor(context: Command.Context, options: Command.Options) {
+  public constructor(context: Command.Context, options: Command.Options) {
     super(context, {
       ...options,
       name: 'next',
@@ -17,7 +17,7 @@ export class NextCommand extends Command {
     });
   }
 
-  messageRun(message: Message<boolean>) {
+  public override messageRun(message: Message<boolean>) {
     logger.verbose(`Received request to skip to next song.`);
     
     let channel = message.member!.voice.channel;
