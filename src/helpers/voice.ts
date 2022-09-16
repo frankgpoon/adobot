@@ -3,7 +3,7 @@ import {
   createAudioResource,
   StreamType ,
   AudioResource} from '@discordjs/voice';
-import { Message, VoiceBasedChannel } from 'discord.js';
+import { Interaction, Message, VoiceBasedChannel } from 'discord.js';
 import { loggers } from 'winston';
 import { VoiceInstance } from '../constructs/voice_instance';
 import { ResourceMetadata } from '../constructs/resource_metadata.js';
@@ -38,14 +38,14 @@ export function getVoiceInstance(voiceInstanceDao: VoiceInstanceDao, channel: Vo
 }
 
 
-export async function createResourceFromYoutubeVideo(videoUrl: string, msg: Message): Promise<AudioResource> {
+export async function createResourceFromYoutubeVideo(videoUrl: string, userInput: Message | Interaction): Promise<AudioResource> {
   let videoInfo = await ytdl.getBasicInfo(videoUrl);
 
   let metadata: ResourceMetadata = {
     title: videoInfo.videoDetails.title,
     authorName: videoInfo.videoDetails.author.name,
     url: videoUrl,
-    commandChannel: msg.channel
+    commandChannel: userInput.channel
   };
 
   let resource = createAudioResource(

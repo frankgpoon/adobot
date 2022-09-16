@@ -3,11 +3,11 @@ import { loggers } from 'winston';
 
 const logger = loggers.get('global_logger');
 
-export class CommandErrorListener extends Listener {
+export class MessageCommandErrorListener extends Listener {
   constructor(context: Listener.Context, options: Listener.Options) {
     super(context, {
       ... options,
-      event: 'commandError'
+      event: 'messageCommandError'
     });
     
   }

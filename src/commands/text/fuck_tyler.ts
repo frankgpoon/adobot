@@ -1,4 +1,4 @@
-import { Command } from '@sapphire/framework';
+import { ChatInputCommand, Command } from '@sapphire/framework';
 import { Message } from 'discord.js';
 
 import { loggers } from 'winston';
@@ -10,7 +10,7 @@ export class FuckTylerCommand extends Command {
     super(context, {
       ...options,
       name: 'ft',
-      description: 'Fuck tyler'
+      description: 'Fuck tyler',
     });
   }
 
@@ -18,6 +18,21 @@ export class FuckTylerCommand extends Command {
     logger.info(`Sent a message saying fuck Tyler`);
     logger.verbose(`Response was to ${message.author.tag} in channel ${message.channel.id}`);
 
-    return message.channel.send('Yo fuck Tyler');
+    message.channel.send('Yo fuck Tyler');
   }
+
+  public override registerApplicationCommands(registry: ChatInputCommand.Registry) {
+    registry.registerChatInputCommand((builder) => {
+      builder.setName(this.name).setDescription(this.description)
+    });
+  }
+
+  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+    logger.info(`Sent a message saying fuck Tyler`);
+    logger.verbose(`Response was to ${interaction.user.tag} in channel ${interaction.channelId}`);
+
+    interaction.reply('Yo fuck Tyler');
+  }
+
+
 }

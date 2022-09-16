@@ -64,9 +64,9 @@ export class VoiceInstance {
 
     this.audioPlayer.on(AudioPlayerStatus.Idle, () => {
       logger.verbose(`AudioPlayer is idle. Attempting to play next song.`);
-      let playingNextSong: boolean = this.playNext();
+      let nextResourceMetadata = this.playNext();
 
-      if (!playingNextSong) {
+      if (!nextResourceMetadata) {
         logger.info(`Setting new timer to leave channel in ${DEFAULT_VOICE_ONLINE_TIME_MS} ms`);
 
         this.removeTimer();
@@ -83,22 +83,35 @@ export class VoiceInstance {
 
 
   /**
-   * Plays the next resource in the queue.
-   * @returns true if something plays next, false if the queue is empty
+   * Plays the next resource in the queue. (This is meant to be used for natural
+   * play nexts, e.g. after a song ends)
+   * @returns metadata of the next resource if it plays next, null if the queue is empty
    */
-  playNext(): boolean {
+  private playNext(): ResourceMetadata | null {
+    let metadata = this.skip();
+    if (metadata) {
+      metadata.commandChannel!.send(`Now playing "${metadata.title}" by ${metadata.authorName}`);
+    }
+    return metadata;
+  }
+
+  /**
+   * Skips the current resource
+   * The difference between this and playNext() is that skip() is meant to be 
+   * @returns metadata of the next resource if it plays next, null if the queue is empty
+   */
+    skip(): ResourceMetadata | null {
     if (this.audioPlayer) {
       let next = this.audioQueue.shift();
       if (!next) {
         logger.verbose(`Queue is empty. Not playing anything.`);
         this.audioPlayer.stop();
-        return false;
+        return null;
       } else {
         let metadata: ResourceMetadata = next.metadata as ResourceMetadata;
-        metadata.commandChannel.send(`Now playing "${metadata.title}" by ${metadata.authorName}`);
         logger.verbose(`Now playing ${metadata.url}`);
         this.audioPlayer.play(next);
-        return true;
+        return metadata;
       }
     } else {
       throw 'Adobot must be in a channel before running this';
