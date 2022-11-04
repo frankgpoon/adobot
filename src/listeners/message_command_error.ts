@@ -14,6 +14,7 @@ export class MessageCommandErrorListener extends Listener {
 
   
   public run(error: UserError, { message }: MessageCommandErrorPayload) {
+    logger.error(`MessageInputCommand error: ${error}`)
     return message.reply(error.message);
   }
 }

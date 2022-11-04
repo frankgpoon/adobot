@@ -100,7 +100,7 @@ export class VoiceInstance {
    * The difference between this and playNext() is that skip() is meant to be 
    * @returns metadata of the next resource if it plays next, null if the queue is empty
    */
-    skip(): ResourceMetadata | null {
+  skip(): ResourceMetadata | null {
     if (this.audioPlayer) {
       let next = this.audioQueue.shift();
       if (!next) {
@@ -130,8 +130,7 @@ export class VoiceInstance {
         this.play(resource);
         return 0;
       } else {
-        this.addToQueue(resource);
-        return this.addToQueue.length;
+        return this.addToQueue(resource);
       }
     } else {
       throw 'Adobot must be in a channel before running this';
@@ -143,7 +142,7 @@ export class VoiceInstance {
    * Plays a resource immediately
    * @param resource the resource to play
    */
-  play(resource: AudioResource) {
+  private play(resource: AudioResource) {
     // invariant: joinChannel must be called
     let metadata: ResourceMetadata = resource.metadata as ResourceMetadata;
     if (this.audioPlayer!) {
@@ -158,10 +157,12 @@ export class VoiceInstance {
   /**
    * Adds a resource to the queue
    * @param resource the resource to add
+   * @returns the position in the queue
    */
-  addToQueue(resource: AudioResource) {
+  private addToQueue(resource: AudioResource) {
     if (this.audioPlayer) {
       this.audioQueue.push(resource);
+      return this.audioQueue.length;
     } else {
       throw 'Adobot must be in a channel before running this';
     }
@@ -169,43 +170,47 @@ export class VoiceInstance {
 
 
   /**
-   * Pauses the player.
+   * Pauses the audio player. If the interrupt player is active this will fail.
+   * @return true if the audio player was successfully paused
    */
   pause() {
     // cannot pause an interrupt
     if (this.audioPlayer) {
       if (this.activeSubscription?.player === this.audioPlayer) {
-        this.audioPlayer.pause();
+        return this.audioPlayer.pause();
       } else {
         throw 'Something important is playing. Please wait and try again.';
       }
+    } else {
       throw 'Adobot must be in a channel before running this';
     }
   }
 
 
   /**
-   * Unpauses the player.
+   * Unpauses the audio player. If the interrupt player is active this will fail.
+   * @return true if the audio player was successfully unpaused
    */
   unpause() {
     // cannot pause an interrupt
     if (this.audioPlayer) {
       if (this.activeSubscription?.player === this.audioPlayer) {
-        this.audioPlayer.unpause();
+        return this.audioPlayer.unpause();        
       } else {
         throw 'Something important is playing. Please wait and try again.';
-      }
+      } 
+    } else {
       throw 'Adobot must be in a channel before running this';
     }
   }
 
 
   /**
-   * Stops the player.
+   * Stops the player and purges everything from the queue. This works even during
+   * an interrupt.
    */
   stop() {
     if (this.audioPlayer) {
-      // should work even being interrupted
       this.audioPlayer.stop();
       this.audioQueue = [];
     } else {
@@ -214,7 +219,7 @@ export class VoiceInstance {
   }
 
 
-  disconnect() {
+  private disconnect() {
     this.removeTimer();
 
     this.activeSubscription?.unsubscribe();
@@ -233,7 +238,7 @@ export class VoiceInstance {
   }
 
 
-  removeTimer() {
+  private removeTimer() {
     if (this.timer) {
       clearTimeout(this.timer);
     }

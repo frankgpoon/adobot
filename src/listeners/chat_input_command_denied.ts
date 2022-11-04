@@ -14,7 +14,7 @@ export class ChatInputCommandDeniedListener extends Listener {
 
   
   public run(error: UserError, { interaction }: ChatInputCommandDeniedPayload) {
-    logger.warn('chat denied listener')
+    logger.warn(`ChatInputCommand denied from ${interaction.user.tag}`)
     return interaction.reply(error.message);
   }
 }
