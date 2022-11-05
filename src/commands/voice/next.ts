@@ -12,7 +12,7 @@ export class NextCommand extends Command {
       name: 'next',
       aliases: ['n', 'skip'],
       description: 'Skips to the next song',
-      preconditions: ['in_voice_channel'],
+      preconditions: ['in_voice_channel', ['player_active']],
       runIn: CommandOptionsRunTypeEnum.GuildAny
     });
   }

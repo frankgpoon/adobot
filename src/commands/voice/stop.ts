@@ -11,7 +11,7 @@ export class StopCommand extends Command {
       ...options,
       name: 'stop',
       description: 'Stops the player',
-      preconditions: ['in_voice_channel'],
+      preconditions: ['in_voice_channel', ['player_active']],
       runIn: CommandOptionsRunTypeEnum.GuildAny
     });
   }

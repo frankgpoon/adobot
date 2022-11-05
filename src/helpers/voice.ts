@@ -13,13 +13,18 @@ import { VoiceInstanceDao } from '../dao/voice_instance/base_dao.js';
 const logger = loggers.get('global_logger');
 
 
-
+/**
+ * 
+ * @param voiceInstanceDao Voice Instance Dao
+ * @param channel Discord channel to check if a voice instance exists
+ * @returns an existing Voice Instance, or a new one if it doesn't exist already
+ */
 export function getVoiceInstance(voiceInstanceDao: VoiceInstanceDao, channel: VoiceBasedChannel): VoiceInstance {
   
   logger.info(`Attempting to join voice channel ${channel.id}`);
 
   let currentInstance;
-  if (voiceInstanceDao.contains(channel.guild.id)) {
+  if (hasVoiceInstance(voiceInstanceDao, channel)) {
     logger.verbose(`Adobot is already in a channel in this guild.`);
     currentInstance = voiceInstanceDao.get(channel.guild.id);
     if (channel.id !== currentInstance!.voiceChannel?.id) {
@@ -35,6 +40,10 @@ export function getVoiceInstance(voiceInstanceDao: VoiceInstanceDao, channel: Vo
     currentInstance.joinChannel(channel);
   }
   return currentInstance!;
+}
+
+export function hasVoiceInstance(voiceInstanceDao: VoiceInstanceDao, channel: VoiceBasedChannel): boolean {
+  return voiceInstanceDao.contains(channel.guild.id);
 }
 
 

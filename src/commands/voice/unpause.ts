@@ -11,7 +11,7 @@ export class PauseCommand extends Command {
       ...options,
       name: 'unpause',
       description: 'Unpauses the player',
-      preconditions: ['in_voice_channel'],
+      preconditions: ['in_voice_channel', ['player_active']],
       runIn: CommandOptionsRunTypeEnum.GuildAny
     });
   }
