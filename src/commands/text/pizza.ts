@@ -28,7 +28,7 @@ export class PizzaCommand extends Command {
     });
   }
 
-  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.info('Sent Fadi Copypasta');
     logger.verbose(`Response was to ${interaction.user.tag} in channel ${interaction.channelId}`);
 

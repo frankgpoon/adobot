@@ -1,5 +1,5 @@
 import { container, SapphireClient } from '@sapphire/framework';
-import { Intents } from 'discord.js';
+import { GatewayIntentBits } from 'discord.js';
 import { VoiceInstanceDao } from '../dao/voice_instance/base_dao';
 import { VoiceInstanceInMemoryDao } from '../dao/voice_instance/in_memory_dao';
 
@@ -12,10 +12,10 @@ export class AdobotClient extends SapphireClient {
       caseInsensitivePrefixes: true,
       defaultPrefix: '~',
       intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_VOICE_STATES
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildVoiceStates
       ],
       loadDefaultErrorListeners: false,
       loadMessageCommandListeners: true

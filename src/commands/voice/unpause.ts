@@ -38,7 +38,7 @@ export class PauseCommand extends Command {
   }
 
 
-  public override async chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.verbose(`Received request to unpause the current player.`);
     
     // Only try to join the sender's voice channel if they are in one themselves

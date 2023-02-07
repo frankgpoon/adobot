@@ -28,7 +28,7 @@ export class HelpCommand extends Command {
     });
   }
 
-  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.info('Sent help');
     logger.verbose(`Response was to ${interaction.user.tag} in channel ${interaction.channelId}`);
 

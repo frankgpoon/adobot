@@ -38,7 +38,7 @@ export class StopCommand extends Command {
   }
 
 
-  public override async chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.verbose(`Received request to stop the current player.`);
     
     // Only try to join the sender's voice channel if they are in one themselves

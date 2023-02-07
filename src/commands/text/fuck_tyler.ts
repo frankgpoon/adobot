@@ -27,7 +27,7 @@ export class FuckTylerCommand extends Command {
     });
   }
 
-  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.info(`Sent a message saying fuck Tyler`);
     logger.verbose(`Response was to ${interaction.user.tag} in channel ${interaction.channelId}`);
 

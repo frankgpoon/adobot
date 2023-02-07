@@ -1,5 +1,5 @@
 import { Precondition } from '@sapphire/framework';
-import type { CommandInteraction, Message } from 'discord.js';
+import type { ChatInputCommandInteraction, CommandInteraction, Message } from 'discord.js';
 import { loggers } from 'winston';
 import ytdl from 'ytdl-core';
 
@@ -10,7 +10,7 @@ export class ValidYoutubeUrlPrecondition extends Precondition {
     return this.ok();
   }
 
-  public override chatInputRun(interaction: CommandInteraction) {
+  public override chatInputRun(interaction: ChatInputCommandInteraction) {
 
     let url = interaction.options.getString('url', true);
 

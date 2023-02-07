@@ -2,6 +2,7 @@ import { AdobotClient } from './client/adobot_client.js'
 
 import { loggers, transports } from 'winston';
 import { format } from 'logform';
+import { ActivityType } from 'discord.js';
 
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
@@ -24,7 +25,7 @@ client.on('ready', () => {
   logger.info(`Logged in as ${client.user!.tag}!`);
   logger.verbose(`Setting up status`);
 
-  client.user!.setActivity('adobo vids - yum!', { type: 'WATCHING' })
+  client.user!.setActivity('adobo vids - yum!', { type: ActivityType.Watching })
 });
 
 

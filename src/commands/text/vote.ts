@@ -28,7 +28,7 @@ export class VoteCommand extends Command {
     });
   }
 
-  public override chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.info('Sent Fadi campaign poster');
     logger.verbose(`Response was to ${interaction.user.tag} in channel ${interaction.channelId}`);
     interaction.reply({

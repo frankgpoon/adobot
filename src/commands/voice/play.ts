@@ -75,7 +75,7 @@ export class PlayCommand extends Command {
     );
   }
 
-  public override async chatInputRun(interaction: Command.ChatInputInteraction) {
+  public override async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     logger.verbose(`Received request to play YouTube video.`);
 
     let videoUrl = interaction.options.getString('url', true)
