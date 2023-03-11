@@ -1,3 +1,19 @@
+export enum AdobotEnv {
+  PRODUCTION = "production",
+  DEVELOPMENT = "development"
+}
+
+export function getLoggingLevel(env: string): string {
+  switch (env) {
+    case AdobotEnv.DEVELOPMENT:
+      return 'verbose'
+    case AdobotEnv.PRODUCTION:
+      return 'info'
+    default:
+      throw new Error(`Unknown env ${env}`);
+  }
+}
+
 export const DEFAULT_VOICE_ONLINE_TIME_MS: number = 120_000;
 
 export const HELP_TEXT: string = ">>> **Hello! My name is Adobot!** \n" + 

@@ -3,16 +3,17 @@ import { AdobotClient } from './client/adobot_client.js'
 import { loggers, transports } from 'winston';
 import { format } from 'logform';
 import { ActivityType } from 'discord.js';
+import { AdobotEnv, getLoggingLevel } from './const.js';
 
 
 const DISCORD_TOKEN: string = process.env.ADOBOT_DISCORD_TOKEN !== undefined ? process.env.ADOBOT_DISCORD_TOKEN : '';
-const DEBUG_LEVEL: string = process.env.ADOBOT_DEBUG_LEVEL !== undefined ? process.env.ADOBOT_DEBUG_LEVEL : 'verbose';
+const ENV: string = process.env.ADOBOT_ENV !== undefined ? process.env.ADOBOT_ENV : AdobotEnv.DEVELOPMENT;
 
 
 const logger = loggers.add('global_logger');
 logger.add(new transports.Console());
 logger.format = format.cli();
-logger.level = DEBUG_LEVEL;
+logger.level = getLoggingLevel(ENV);
 
 
 // create client
